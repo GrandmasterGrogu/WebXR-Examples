@@ -28,7 +28,25 @@
     var bananasplosion = document.querySelector('#bananaExploding');   
     console.log('Banana has collided with body #' + e.detail.body.el.id);
     data.fired = 1;
-    bananasplosion.setAttribute("particle-system", {duration: 4, enabled:true});
+    bananasplosion.setAttribute("particle-system", {
+      maxAge:0.5,
+      size:1,
+      duration: 3,
+      opacity: .8,
+      maxParticleCount: 250000,
+      rotationAngle: -30,
+      color: "#FFFF00",
+      texture: "./images/bananasplosion.png", 
+      type: "sphere",
+      accelerationSpread: "50 50 50",
+      accelerationValue: "0 0 0",
+      velocityValue: "0 0 0",
+      velocitySpread: "50 50 50",
+      enabled:true
+    });
+    /* texture:./images/bananasplosion.png; maxAge:0.5; size:1; type:sphere; rotationAngle: -30; duration:4; 
+      accelerationSpread: 50 50 50; accelerationValue: 0 0 0; velocityValue: 0 0 0; velocitySpread: 50 50 50; maxParticleCount: 250000;
+      opacity:.8; color: #FFFF00; enabled: false;*/
     bananasplosion.components.sound.playSound();
   }
   
@@ -94,9 +112,7 @@ AFRAME.registerComponent('open-banana-door', {
       <!-- Banana -->
       <a-entity id="bananaBomb" banana-bomb dynamic-body gltf-model="#banana" scale=".01 .01 .01" position=".117 12.11 -4.9" rotation="90 0 0">
         <!-- Banana-splosion! -->
-      <a-entity scale="100 100 100" id="bananaExploding" particle-system="texture:./images/bananasplosion.png; maxAge:0.5; size:1; type:sphere; rotationAngle: -30; duration:4; 
-      accelerationSpread: 50 50 50; accelerationValue: 0 0 0; velocityValue: 0 0 0; velocitySpread: 50 50 50; maxParticleCount: 250000;
-      opacity:.8; color: #FFFF00; enabled: false;"
+      <a-entity scale="100 100 100" id="bananaExploding"
       sound="src: #explodingSound; autoplay: false; volume:1; rolloffFactor: 5; loop: false;"></a-entity>
       </a-entity>
      
