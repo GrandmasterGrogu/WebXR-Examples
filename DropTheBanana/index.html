@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <title>Drop the Banana!</title>
     <meta name="description" content="glTF Model - A-Frame">
-    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
-    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v4.0.1/dist/aframe-physics-system.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
-    <script src="./js/play-all-model-animations.js"></script>
+    <script src="js/aframe.min.js"></script>
+    <script src="js/aframe-particle-system-component.min.js"></script>
+    <script src="js/aframe-physics-system.min.js"></script>
+    <script src="js/aframe-extras.min.js"></script>
+    <script src="js/aframe-event-set-component.min.js"></script>
  <script>
    AFRAME.registerComponent('banana-bomb', {
      schema: {
@@ -24,7 +24,7 @@
 
    bananaBomb.addEventListener('collide', function (e) {
    var fired = data.fired;
-  if(e.detail.body.el.id.indexOf("customGorillaCollider" > -1) && fired==0) {
+  if(e.detail.body.el.id.indexOf("customGorillaCollider")  > -1 && fired==0) {
     var bananasplosion = document.querySelector('#bananaExploding');   
     console.log('Banana has collided with body #' + e.detail.body.el.id);
     data.fired = 1;
@@ -32,14 +32,6 @@
     bananasplosion.components.sound.playSound();
   }
   
-  /*
-  e.detail.target.el;  // Original entity (playerEl).
-  e.detail.body.el;    // Other entity, which playerEl touched.
-  e.detail.contact;    // Stats about the collision (CANNON.ContactEquation).
-  e.detail.contact.ni; // Normal (direction) of the collision (CANNON.Vec3).
-  */
-
-
     });
   }
 });
@@ -50,10 +42,18 @@ AFRAME.registerComponent('open-banana-door', {
   var el = this.el;
   console.log(el.components)
   var dropperDoor = document.querySelector('#dropperDoor');
-
+  var gorilla = document.querySelector('#blueGorilla');
   dropperDoor.addEventListener('animationcomplete__2', function (e) {
    console.log("complete");
    dropperDoor.removeAttribute('static-body')
+    });
+  
+
+  el.addEventListener('click', function (e) {
+   console.log("button pressed");
+   dropperDoor.setAttribute("animation", {enabled:true})
+   dropperDoor.setAttribute("animation__2", {enabled:true})
+   el.removeAttribute('geometry'); // Vanish button, one-time use
     });
   }
   
@@ -64,7 +64,7 @@ AFRAME.registerComponent('open-banana-door', {
     <a-scene stats  renderer="antialias: true;
     colorManagement: true;
     logarithmicDepthBuffer: true;"
-    physics="friction: 0.1; restitution: 1">
+    physics="friction: 0.1; restitution: .8">
       <a-assets>
         <a-asset-item id="blueGorilla" src="./models/blueGorilla.glb"></a-asset-item>
         <a-asset-item id="banana" src="./models/banana.glb"></a-asset-item> 
@@ -76,6 +76,8 @@ AFRAME.registerComponent('open-banana-door', {
         <img id="ground" src="./images/ground-diffuse.jpg">
         <img id="groundNormal" src="./images/ground-normal.jpg">
       </a-assets>
+<!-- Camera -->
+<a-camera raycaster="objects: .clickable" cursor="rayOrigin: mouse" laser-controls line="color: red; opacity: 0.75" wasd-controls></a-camera>
       <!-- 360 image sky-->
       <a-sky src="#forest" rotation="0 0 0"></a-sky>
 <!--Background Music 
@@ -84,16 +86,16 @@ AFRAME.registerComponent('open-banana-door', {
 
       <!-- Blue Gorilla, animated character model -->
       
-      <a-entity gltf-model="#blueGorilla" animation-mixer position="0 0 -4"
+      <a-entity gltf-model="#blueGorilla" animation-mixer position="0 0 -5"
     >
     <a-cylinder id="customGorillaCollider" position="0 .9 0" opacity="0" scale=".5 1.5 .5" static-body></a-cylinder>
   </a-entity>
    
       <!-- Banana -->
-      <a-entity id="bananaBomb" banana-bomb dynamic-body gltf-model="#banana" scale=".01 .01 .01" position="0 7 -5" rotation="90 0 0">
+      <a-entity id="bananaBomb" banana-bomb dynamic-body gltf-model="#banana" scale=".01 .01 .01" position=".117 12.11 -4.9" rotation="90 0 0">
         <!-- Banana-splosion! -->
-      <a-entity scale="100 100 100" id="bananaExploding" particle-system="texture:./images/bananasplosion.png; maxAge:0.5; size:1; type:sphere; rotationAngle: -30; duration:4; dragValue: 5;
-      dragSpread: 5; accelerationSpread: 50 50 50; accelerationValue: 0 0 0; velocityValue: 0 0 0; velocitySpread: 50 50 50; maxParticleCount: 250000;
+      <a-entity scale="100 100 100" id="bananaExploding" particle-system="texture:./images/bananasplosion.png; maxAge:0.5; size:1; type:sphere; rotationAngle: -30; duration:4; 
+      accelerationSpread: 50 50 50; accelerationValue: 0 0 0; velocityValue: 0 0 0; velocitySpread: 50 50 50; maxParticleCount: 250000;
       opacity:.8; color: #FFFF00; enabled: false;"
       sound="src: #explodingSound; autoplay: false; volume:1; rolloffFactor: 5; loop: false;"></a-entity>
       </a-entity>
@@ -109,20 +111,22 @@ AFRAME.registerComponent('open-banana-door', {
       <a-box color="#654321" scale="1 15 1" position="-2.9 6 -7"></a-box>
       <a-box id="dropperWall2"  static-body color="gray" opacity="1" scale="6 .5 3" position="0 12 -7" rotation="-90 0 0"></a-box>
       <a-box id="dropperSideWall2"  color="gray" opacity="1" scale="4 .2 3" position="2.9 12 -5" rotation="-90 90 0"></a-box>
-      <a-box id="dropperDoor" animation="property: scale; to: 0 .5 4; dur: 1000; easing: linear; loop: false"  
-      animation__2="property: position; to: -2.95 12 -5; dur: 1000; easing: linear; loop: false"  
-      static-body color="lightblue" opacity=".5" scale="6 .5 4" position="0 12 -5" rotation="0 0 0"></a-box>
+      <a-box id="dropperDoor" rotation="20 0 0" animation="property: scale; to: 0 .5 4; dur: 1000; easing: linear; loop: false; enabled:false;"  
+      animation__2="property: position; to: -2.95 11 -5; dur: 1000; easing: linear; loop: false; enabled:false;"  
+      static-body color="lightblue" opacity=".5" scale="6 .5 4" position="0 11 -5" rotation="0 0 0"></a-box>
 
-      <a-entity position="0 3 -2" text="font: https://cdn.aframe.io/fonts/mozillavr.fnt; value: Via stock font name."></a-entity>
-      <a-cylinder color="red" open-banana-door position="2.9 1 -2.25" rotation="90 0 0" scale=".5 .5 .5" static-body></a-cylinder>
+     <a-text text="font: ./fonts/KelsonSans.fnt; fontImage: ./fonts/KelsonSans.png; value: Testing; align:center; width: 6;" 
+     position="2.9 2 -1.99" geometry="primitive:plane; height: 1; width: 5;" ></a-text>
+     <!-- Banana button --> 
+     <a-cylinder class="clickable" open-banana-door position="2.9 1 -2.25" rotation="90 0 0" scale=".5 .5 .5" 
+      event-set__enter="_event: mouseenter; material.emissiveIntensity: .2;"
+      event-set__leave="_event: mouseleave; material.emissiveIntensity: 0;"
+      material="color: #D71E28; emissive: pink; emissiveIntensity:0;"
+      ></a-cylinder>
     </a-entity>
-      <!-- Target ground-->
+      <!-- Ground-->
       <a-plane material="src:#ground; repeat: 100 100; normalMap: #groundNormal; normalTextureRepeat: 100 100; roughness:.7;" scale="100 100 100" rotation="-90 0 0" position="0 0 -3" static-body></a-plane>
 
-      <a-entity
-  geometry="primitive: plane; width: 4; height: auto"
-  material="color: blue"
-  text="value: This text will be 4 units wide."></a-entity>
 
     </a-scene>
   </body>
