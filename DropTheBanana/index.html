@@ -115,8 +115,6 @@ AFRAME.registerComponent('open-banana-door', {
       animation__2="property: position; to: -2.95 11 -5; dur: 1000; easing: linear; loop: false; enabled:false;"  
       static-body color="lightblue" opacity=".5" scale="6 .5 4" position="0 11 -5" rotation="0 0 0"></a-box>
 
-     <a-text text="font: ./fonts/KelsonSans.fnt; fontImage: ./fonts/KelsonSans.png; value: Testing; align:center; width: 6;" 
-     position="2.9 2 -1.99" geometry="primitive:plane; height: 1; width: 5;" ></a-text>
      <!-- Banana button --> 
      <a-cylinder class="clickable" open-banana-door position="2.9 1 -2.25" rotation="90 0 0" scale=".5 .5 .5" 
       event-set__enter="_event: mouseenter; material.emissiveIntensity: .2;"
