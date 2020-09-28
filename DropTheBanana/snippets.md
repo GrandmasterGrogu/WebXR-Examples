@@ -57,6 +57,12 @@
       <a-entity id="bananaBomb" banana-bomb dynamic-body gltf-model="#banana" scale=".01 .01 .01" position=".117 12.11 -4.9" rotation="90 0 0">
 ```
 
+**Banana bomb explosion entity**
+```html
+  <a-entity scale="100 100 100" id="bananaExploding"
+      sound="src: #explodingSound; autoplay: false; volume:1; rolloffFactor: 5; loop: false;"></a-entity>
+      </a-entity>
+```
 
 
 **Banana bomb component JavaScript**
