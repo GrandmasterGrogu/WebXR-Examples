@@ -188,7 +188,7 @@ AFRAME.registerComponent('open-banana-door', {
 ```
 **Adding Gorilla and attaching a collider**
 ```html
-    <a-entity id="blueGorillaModel" gltf-model="#blueGorilla" animation-mixer="clip: Dance_06" position="0 0 -5">
+    <a-entity id="blueGorillaModel" gltf-model="#blueGorilla" animation-mixer="clip: 04_Excited" position="0 0 -5">
     <a-cylinder id="customGorillaCollider" position="0 .9 0" opacity="0" scale=".5 1.5 .5" static-body></a-cylinder>
   </a-entity>
 ```
