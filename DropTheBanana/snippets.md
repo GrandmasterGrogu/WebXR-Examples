@@ -70,6 +70,7 @@
 ```html
 <script>
  AFRAME.registerComponent('banana-bomb', {
+     // Define a variable to track if the bomb exploded
      schema: {
        fired: {
          default: 0,
@@ -81,12 +82,16 @@
   //console.log(data)
   var bananaBomb = document.querySelector('#bananaBomb');
 
+// Listen for the collision event of the banana.
    bananaBomb.addEventListener('collide', function (e) {
-   var fired = data.fired;
+   var fired = data.fired; // Read the fired variable
+  
+  // If it hits the gorilla and has not exploded, trigger the explosion
   if(e.detail.body.el.id.indexOf("customGorillaCollider")  > -1 && fired==0) {
     var bananasplosion = document.querySelector('#bananaExploding');   
     console.log('Banana has collided with body #' + e.detail.body.el.id);
     data.fired = 1;
+    // Add explosion particle effect component that plays for a few seconds
     bananasplosion.setAttribute("particle-system", {
       maxAge:0.5,
       size:1,
@@ -103,9 +108,8 @@
       velocitySpread: "50 50 50",
       enabled:true
     });
-    /* texture:./images/bananasplosion.png; maxAge:0.5; size:1; type:sphere; rotationAngle: -30; duration:4; 
-      accelerationSpread: 50 50 50; accelerationValue: 0 0 0; velocityValue: 0 0 0; velocitySpread: 50 50 50; maxParticleCount: 250000;
-      opacity:.8; color: #FFFF00; enabled: false;*/
+
+    // Explosion sound effect
     bananasplosion.components.sound.playSound();
   }
   
@@ -142,27 +146,33 @@ AFRAME.registerComponent('open-banana-door', {
   init: function () {
   var el = this.el;
   console.log(el.components)
+ // Get the door and the gorilla
   var dropperDoor = document.querySelector('#dropperDoor');
-  var gorilla = document.querySelector('#blueGorilla');
-  
-dropperDoor.addEventListener('animationcomplete__2', function (e) {
+  var gorilla = document.querySelector('#blueGorillaModel');
+
+// Output Gorilla to browser console / Developer Tools
+  console.log("gorilla");  
+  console.log(gorilla.components);
+
+
+  dropperDoor.addEventListener('animationcomplete__2', function (e) {
    console.log("complete");
-   dropperDoor.removeAttribute('static-body')
+   dropperDoor.removeAttribute('static-body');
+   // Remove the static body in case it did not move with the animation.
     });
   
 
   el.addEventListener('click', function (e) {
    console.log("button pressed");
+   // Start the animation when the button is pressed.
    dropperDoor.setAttribute("animation", {enabled:true})
    dropperDoor.setAttribute("animation__2", {enabled:true})
-   el.removeAttribute('geometry'); // Vanish button, one-time use
+   el.removeAttribute('geometry'); // Vanish the button, one-time use
     });
   }
   
 });
 ```
-
-
 
 
 **Adding keyboard, mouse and VR controls**
@@ -178,8 +188,7 @@ dropperDoor.addEventListener('animationcomplete__2', function (e) {
 ```
 **Adding Gorilla and attaching a collider**
 ```html
-    <a-entity gltf-model="#blueGorilla" animation-mixer position="0 0 -5"
-    >
+    <a-entity id="blueGorillaModel" gltf-model="#blueGorilla" animation-mixer="clip: Dance_06" position="0 0 -5">
     <a-cylinder id="customGorillaCollider" position="0 .9 0" opacity="0" scale=".5 1.5 .5" static-body></a-cylinder>
   </a-entity>
 ```
