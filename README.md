@@ -4,6 +4,8 @@ A collection of WebXR examples.
 
 # Drop the banana
 
+https://alexxgathp.github.io/WebXR-Examples/DropTheBanana/
+
 Music, sound effects, and photos provided by the public domain :)
 
 Gorilla model
