@@ -108,8 +108,9 @@ AFRAME.registerComponent('open-banana-door', {
         <img id="groundNormal" src="./images/ground-normal.jpg">
       </a-assets>
 <!-- Camera and controls -->
-<a-camera raycaster="objects: .clickable" cursor="rayOrigin: mouse" laser-controls line="color: red; opacity: 0.75" wasd-controls></a-camera>
-
+<a-camera raycaster="objects: .clickable" cursor="rayOrigin: mouse" look-controls wasd-controls></a-camera>
+<a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .clickable"></a-entity>
+<a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable" line="color: red; opacity: 0.75"></a-entity>
 <!-- 360 image sky-->
       <a-sky src="#forest" rotation="0 0 0"></a-sky>
 
