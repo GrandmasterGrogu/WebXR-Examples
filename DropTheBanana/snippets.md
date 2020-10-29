@@ -177,7 +177,10 @@ AFRAME.registerComponent('open-banana-door', {
 
 **Adding keyboard, mouse and VR controls**
 ```html
-<a-camera raycaster="objects: .clickable" cursor="rayOrigin: mouse" laser-controls line="color: red; opacity: 0.75" wasd-controls></a-camera>
+<!-- Camera and controls -->
+<a-camera raycaster="objects: .clickable" cursor="rayOrigin: mouse" look-controls wasd-controls></a-camera>
+<a-entity id="leftHand" laser-controls="hand: left" raycaster="objects: .clickable"></a-entity>
+<a-entity id="rightHand" laser-controls="hand: right" raycaster="objects: .clickable" line="color: red; opacity: 0.75"></a-entity>
 ```
 
 **Adding physics and particle system components**
