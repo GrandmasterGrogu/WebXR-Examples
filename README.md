@@ -4,7 +4,7 @@ A collection of WebXR examples.
 
 # Drop the banana
 
-https://alexxgathp.github.io/WebXR-Examples/DropTheBanana/
+https://grandmastergrogu.github.io/WebXR-Examples/DropTheBanana/
 
 Music, sound effects, and photos provided by the public domain :)
 
